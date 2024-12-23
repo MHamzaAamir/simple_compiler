@@ -8,6 +8,7 @@ class SimpleCompiler():
             "number": r"\b\d+\b",
             "operator": r"[+/\-*]",
             "declare": r"\bdeclare\b",
+            "while": r"\bwhile\b",
             "if": r"\bif\b",
             "open_paren": r"\(",
             "close_paren": r"\)",
@@ -23,13 +24,15 @@ class SimpleCompiler():
         S -> DECLARATION | EXPRESSION 
         DECLARATION -> 'declare' 'identifier'
         
-        EXPRESSION -> ASSIGNMENT | CONDITIONAL
+        EXPRESSION -> ASSIGNMENT | CONDITIONAL | LOOP
         
         ASSIGNMENT -> 'identifier' 'equals' TERM 
         TERM -> 'identifier' | 'number' | 'number' 'operator' TERM | 'identifier' 'operator' TERM
         
         CONDITIONAL -> 'if' 'open_paren' CONDITION 'close_paren' 'open_curly' EXPRESSION 'close_curly'
         CONDITION -> 'identifier' 'comparison_op' 'identifier' | 'identifier' 'comparison_op' 'number'
+        
+        LOOP -> 'while' 'open_paren' CONDITION 'close_paren' 'open_curly' EXPRESSION 'close_curly'
         """)
         self.parser = ChartParser(grammar)
     
