@@ -30,9 +30,9 @@ class SimpleCompiler():
         TERM -> 'identifier' | 'number' | 'number' 'operator' TERM | 'identifier' 'operator' TERM
         
         CONDITIONAL -> 'if' 'open_paren' CONDITION 'close_paren' 'open_curly' EXPRESSION 'close_curly'
-        CONDITION -> 'identifier' 'comparison_op' 'identifier' | 'identifier' 'comparison_op' 'number'
-        
         LOOP -> 'while' 'open_paren' CONDITION 'close_paren' 'open_curly' EXPRESSION 'close_curly'
+        
+        CONDITION -> 'identifier' 'comparison_op' 'identifier' | 'identifier' 'comparison_op' 'number'
         """)
         self.parser = ChartParser(grammar)
     
