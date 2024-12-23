@@ -5,18 +5,31 @@ from nltk import CFG, ChartParser
 class SimpleCompiler():
     def __init__(self):
         self.token_patterns = {
-            "identifier": r"[a-zA-Z_][a-zA-Z0-9_]*",
             "number": r"\b\d+\b",
             "operator": r"[+/\-*]",
+            "declare": r"\bdeclare\b",
+            "if": r"\bif\b",
+            "open_paren": r"\(",
+            "close_paren": r"\)",
+            "open_curly": r"\{",
+            "close_curly": r"\}",
+            "comparison_op": r"(==|>=|<=|>|<)",
             "equals": r"[=]",
             "whitespace": r"\s+",
+            "identifier": r"[a-zA-Z_][a-zA-Z0-9_]*",
         }
 
         grammar = CFG.fromstring("""
-        S -> DECLARATION | ASSIGNMENT
-        ASSIGNMENT -> 'identifier' 'equals' OPERATION | 'identifier' 'equals' 'number'
-        OPERATION -> TERM 'operator' TERM
-        TERM -> 'number' | 'indentifier'
+        S -> DECLARATION | EXPRESSION 
+        DECLARATION -> 'declare' 'identifier'
+        
+        EXPRESSION -> ASSIGNMENT | CONDITIONAL
+        
+        ASSIGNMENT -> 'identifier' 'equals' TERM 
+        TERM -> 'identifier' | 'number' | 'number' 'operator' TERM | 'identifier' 'operator' TERM
+        
+        CONDITIONAL -> 'if' 'open_paren' CONDITION 'close_paren' 'open_curly' EXPRESSION 'close_curly'
+        CONDITION -> 'identifier' 'comparison_op' 'identifier' | 'identifier' 'comparison_op' 'number'
         """)
         self.parser = ChartParser(grammar)
     
@@ -39,6 +52,7 @@ class SimpleCompiler():
                             tokens = tokens + " " + token_type
                     line = line[len(lexeme):]
                     matched = True
+                    break
             if not matched:
                 raise Exception(f"Unrecognized token at Line: {line_no}")
         return tokens
@@ -75,12 +89,3 @@ class SimpleCompiler():
 if __name__ == "__main__":
     compiler = SimpleCompiler()
     compiler.compile("code.txt")
-
-
-    
-    
-
-
-    
-
-            
