@@ -6,7 +6,15 @@ x = 5
 y = 10
 z = 0
 
-if (x==5){ if (y==10){ z = 11 } }
+if (y >= 11) {y = y + 10}
+
+while(x>10) {x=x-11}
+
+while(x>11) {x=x/2}
+
+if (x==5){ if (y==10){ z = x + y } }
 
 while (x <= 1){if(y==10){x = x+1} }
+
+
 
